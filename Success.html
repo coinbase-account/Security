@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Success - Coinbase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #000;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+
+    .top-right {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .top-right a {
+      color: #4c8ffb;
+      font-weight: 500;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .success-container {
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .success-title {
+      font-size: 24px;
+      font-weight: 600;
+      color: #4c8ffb; /* Blue for success */
+      margin-bottom: 15px;
+    }
+
+    .success-text {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 32px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background-color: #4c8ffb;
+      color: black;
+    }
+
+    .btn-primary:hover {
+      background-color: #367af6;
+    }
+
+    /* End to End Encryption Text with CSS Padlock */
+    .encryption-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 14px;
+      color: #4c8ffb;
+      margin-top: 20px;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .padlock {
+      width: 16px;
+      height: 20px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .padlock::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 4px;
+      width: 8px;
+      height: 8px;
+      border: 2px solid #4c8ffb;
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+      animation: lock-shackle 0.5s ease-in-out;
+    }
+
+    .padlock::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 0;
+      width: 16px;
+      height: 12px;
+      background: #4c8ffb;
+      border-radius: 2px;
+      box-shadow: 0 0 8px rgba(76, 143, 251, 0.5);
+    }
+
+    @keyframes lock-shackle {
+      0% { transform: translateY(2px); }
+      50% { transform: translateY(-2px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="success-container">
+    <div class="success-title">User's Account Secured Successful!</div>
+    <div class="success-text">
+      Your password has been updated securely. Click below to continue to your account.
+    </div>
+
+    <button class="btn btn-primary" onclick="window.location.href='login.html'">Close</button>
+
+    <div class="encryption-text">
+      <span class="padlock"></span>
+      End to End Encryption
+    </div>
+  </div>
+</body>
+</html>

